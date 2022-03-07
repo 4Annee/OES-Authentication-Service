@@ -1,4 +1,10 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using AuthenticationService.Data;
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<UserServiceContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserServiceContext")));
 
 // Add services to the container.
 
@@ -9,12 +15,19 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+using (var context = builder.Services.BuildServiceProvider().GetRequiredService<UserServiceContext>())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    context.Database.EnsureDeleted();
+    context.Database.EnsureCreated();
 }
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
 app.UseHttpsRedirection();
 
