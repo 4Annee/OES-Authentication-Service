@@ -8,102 +8,49 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AuthenticationService.Data;
 using AuthenticationService.Models;
+using AuthenticationService.Repositories;
+using AuthenticationService.DTOs.Section;
 
 namespace AuthenticationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/study/[controller]")]
     [ApiController]
     public class StudySectionsController : ControllerBase
     {
-        private readonly UserServiceContext _context;
+        private readonly ISectionRepository repo;
 
-        public StudySectionsController(UserServiceContext context)
+        public StudySectionsController(ISectionRepository repo)
         {
-            _context = context;
+            this.repo = repo;
         }
-
-        // GET: api/StudySections
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Section>>> GetSections()
-        {
-            return await _context.Sections.ToListAsync();
-        }
-
         // GET: api/StudySections/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Section>> GetSection(Guid id)
+        public ActionResult<Section> GetSections(Guid id)
         {
-            var section = await _context.Sections.FindAsync(id);
-
-            if (section == null)
+            var sections = repo.GetYearSections(id);
+            if (sections == null)
             {
                 return NotFound();
             }
-
-            return section;
+            return Ok(sections);
         }
 
-        // PUT: api/StudySections/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSection(Guid id, Section section)
-        {
-            if (id != section.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(section).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SectionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/StudySections
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Section>> PostSection(Section section)
+        public ActionResult<Section> PostSection(SectionDtoForCreation section)
         {
-            _context.Sections.Add(section);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSection", new { id = section.Id }, section);
+            return Ok(repo.AddSection(section));
         }
 
         // DELETE: api/StudySections/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSection(Guid id)
+        public IActionResult DeleteSection(Guid id)
         {
-            var section = await _context.Sections.FindAsync(id);
-            if (section == null)
-            {
-                return NotFound();
-            }
-
-            _context.Sections.Remove(section);
-            await _context.SaveChangesAsync();
-
+            repo.RemoveSection(id);
             return NoContent();
         }
 
-        private bool SectionExists(Guid id)
-        {
-            return _context.Sections.Any(e => e.Id == id);
-        }
     }
 }

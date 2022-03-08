@@ -11,7 +11,7 @@ using AuthenticationService.Models;
 
 namespace AuthenticationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/study/[controller]")]
     [ApiController]
     public class StudyGroupsController : ControllerBase
     {

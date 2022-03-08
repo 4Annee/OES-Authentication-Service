@@ -8,102 +8,48 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AuthenticationService.Data;
 using AuthenticationService.Models;
+using AuthenticationService.Repositories;
+using AuthenticationService.DTOs.Year;
 
 namespace AuthenticationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/study/[controller]")]
     [ApiController]
     public class StudyYearController : ControllerBase
     {
-        private readonly UserServiceContext _context;
+        private readonly IYearRepository yearRepo;
 
-        public StudyYearController(UserServiceContext context)
+        public StudyYearController(IYearRepository yearRepo)
         {
-            _context = context;
+            this.yearRepo = yearRepo;
         }
 
         // GET: api/StudyYear
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Year>>> GetYear()
+        public ActionResult<IEnumerable<YearDto>> GetYears()
         {
-            return await _context.Years.ToListAsync();
-        }
-
-        // GET: api/StudyYear/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Year>> GetYear(Guid id)
-        {
-            var year = await _context.Years.FindAsync(id);
-
-            if (year == null)
+            var Years = yearRepo.GetAllYears();
+            if (Years == null)
             {
                 return NotFound();
             }
-
-            return year;
+            return Ok(Years);
         }
 
-        // PUT: api/StudyYear/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutYear(Guid id, Year year)
-        {
-            if (id != year.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(year).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!YearExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/StudyYear
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Year>> PostYear(Year year)
+        public ActionResult PostYear(YearDtoForCreation year)
         {
-            _context.Years.Add(year);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetYear", new { id = year.Id }, year);
+            return Ok(yearRepo.AddYear(year));
         }
 
         // DELETE: api/StudyYear/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteYear(Guid id)
+        public IActionResult DeleteYear(Guid id)
         {
-            var year = await _context.Years.FindAsync(id);
-            if (year == null)
-            {
-                return NotFound();
-            }
-
-            _context.Years.Remove(year);
-            await _context.SaveChangesAsync();
-
+            yearRepo.RemoveYear(id);
             return NoContent();
-        }
-
-        private bool YearExists(Guid id)
-        {
-            return _context.Years.Any(e => e.Id == id);
         }
     }
 }

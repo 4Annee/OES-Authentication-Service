@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AuthenticationService.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationService.Controllers
@@ -7,9 +9,15 @@ namespace AuthenticationService.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        /**
-         Endpoints :
-            1 - Login User
-         */
+        private readonly UserManager<UserModel> userManager;
+        private readonly IConfiguration configuration;
+        private readonly SignInManager<UserModel> signInManager;
+
+        public LoginController(UserManager<UserModel> userManager, IConfiguration configuration, SignInManager<UserModel> signInManager)
+        {
+            this.userManager = userManager;
+            this.configuration = configuration;
+            this.signInManager = signInManager;
+        }
     }
 }
