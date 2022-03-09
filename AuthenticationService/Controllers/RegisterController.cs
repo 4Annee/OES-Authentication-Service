@@ -1,10 +1,6 @@
 ﻿using AuthenticationService.DTOs.AppUser;
-using AuthenticationService.Models;
 using AuthenticationService.Services;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationService.Controllers
@@ -14,9 +10,6 @@ namespace AuthenticationService.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IUserRegistrationService service;
-
-
-        /// TODO : Make The Endpoints Using Services So That They Can Be Reused
         public RegisterController(IUserRegistrationService service)
         {
             this.service = service;

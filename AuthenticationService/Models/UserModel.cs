@@ -7,7 +7,7 @@ namespace AuthenticationService.Models
 
         public string FullName { get; set; }
         public DateTime Birthday { get; set; }
-        public string? StudentID { get; set; }
+        public string? StudentCardId { get; set; }
         public string CIDNumber { get; set; }
 
         // Many To One Relationship

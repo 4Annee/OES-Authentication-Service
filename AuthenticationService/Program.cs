@@ -23,10 +23,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IYearRepository,YearRepository>();
-builder.Services.AddScoped<ISectionRepository,SectionRepository>();
-builder.Services.AddScoped<IGroupRepository,GroupRepository>();
-builder.Services.AddScoped<IUserRegistrationService,UserRegistrationService>();
+builder.Services.AddScoped<IYearRepository, YearRepository>();
+builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
 
 var app = builder.Build();
 
@@ -37,12 +37,12 @@ using (var context = builder.Services.BuildServiceProvider().GetRequiredService<
     context.Database.EnsureCreated();
 }
 
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 

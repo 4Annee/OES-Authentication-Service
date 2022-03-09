@@ -9,9 +9,12 @@ namespace AuthenticationService.Controllers
     {
         /**
          Endpoints :
+            0 - Search For User
             1 - Get User Details
+            2 - Get Users By Group
+            3 - Get Users By Section
+            4 - Get Users By Year
+            5 - Get Teachers List
          */
-
-
     }
 }
