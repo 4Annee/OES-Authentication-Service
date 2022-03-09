@@ -26,6 +26,9 @@ namespace AuthenticationService.Repositories
         {
             var groupmodel = mapper.Map<Group>(group);
             groupmodel.Id = Guid.NewGuid();
+            try
+            {groupmodel.YearId = context.Sections.Find(group.SectionId).YearId;}
+            catch{}
             context.Add(groupmodel);
             context.SaveChanges();
             return mapper.Map<GroupDto>(groupmodel);

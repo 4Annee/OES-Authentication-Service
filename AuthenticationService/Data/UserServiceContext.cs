@@ -11,7 +11,22 @@ namespace AuthenticationService.Data
     public class UserServiceContext : IdentityDbContext<UserModel>
     {
         public UserServiceContext(DbContextOptions options) : base(options)
+        {}
+
+        protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Group>()
+                .HasOne(c => c.Year)
+                .WithMany(e=>e.YearGroups)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            builder.Entity<Group>()
+                .HasOne(c => c.Section)
+                .WithMany(e=>e.Groups)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Year> Years { get; set; }

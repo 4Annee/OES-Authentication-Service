@@ -10,7 +10,7 @@
         public Guid YearId { get; set; }
 
         // One To Many
-        public List<Group>? Groups { get; set; }
+        public List<Group> Groups { get; set; }
 
     }
 }

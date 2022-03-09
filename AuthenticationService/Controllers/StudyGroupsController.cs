@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AuthenticationService.Data;
 using AuthenticationService.Models;
+using AuthenticationService.Repositories;
+using AuthenticationService.DTOs.Group;
 
 namespace AuthenticationService.Controllers
 {
@@ -15,95 +17,49 @@ namespace AuthenticationService.Controllers
     [ApiController]
     public class StudyGroupsController : ControllerBase
     {
-        private readonly UserServiceContext _context;
+        private readonly IGroupRepository repo;
 
-        public StudyGroupsController(UserServiceContext context)
+        public StudyGroupsController(IGroupRepository repo)
         {
-            _context = context;
+            this.repo = repo;
         }
 
-        // GET: api/StudyGroups
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
+        [HttpGet("/year/{id}")]
+        public ActionResult<Group> GetYearGroups(Guid id)
         {
-            return await _context.Groups.ToListAsync();
-        }
-
-        // GET: api/StudyGroups/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Group>> GetGroup(Guid id)
-        {
-            var @group = await _context.Groups.FindAsync(id);
-
-            if (@group == null)
+            var sections = repo.GetYearGroups(id);
+            if (sections == null)
             {
                 return NotFound();
             }
-
-            return @group;
+            return Ok(sections);
         }
 
-        // PUT: api/StudyGroups/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGroup(Guid id, Group @group)
+        [HttpGet("/section/{id}")]
+        public ActionResult<Group> GetSectionGroups(Guid id)
         {
-            if (id != @group.Id)
+            var sections = repo.GetSectionGroups(id);
+            if (sections == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            _context.Entry(@group).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GroupExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(sections);
         }
 
-        // POST: api/StudyGroups
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+
         [HttpPost]
-        public async Task<ActionResult<Group>> PostGroup(Group @group)
+        public ActionResult<Group> CreateGroup(GroupDtoForCreation group)
         {
-            _context.Groups.Add(@group);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetGroup", new { id = @group.Id }, @group);
+            return Ok(repo.AddGroup(group));
         }
 
         // DELETE: api/StudyGroups/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGroup(Guid id)
+        public IActionResult DeleteGroup(Guid id)
         {
-            var @group = await _context.Groups.FindAsync(id);
-            if (@group == null)
-            {
-                return NotFound();
-            }
-
-            _context.Groups.Remove(@group);
-            await _context.SaveChangesAsync();
-
+            repo.RemoveGroup(id);
             return NoContent();
-        }
-
-        private bool GroupExists(Guid id)
-        {
-            return _context.Groups.Any(e => e.Id == id);
         }
     }
 }

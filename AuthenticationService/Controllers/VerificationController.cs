@@ -11,7 +11,6 @@ namespace AuthenticationService.Controllers
          Endpoints :
             1 - Verify Token 
             2 - Verify Role
-            3 - 
          */
     }
 }

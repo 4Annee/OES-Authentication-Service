@@ -4,6 +4,7 @@ using AuthenticationService.Data;
 using AuthenticationService.Repositories;
 using Microsoft.AspNetCore.Identity;
 using AuthenticationService.Models;
+using AuthenticationService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IYearRepository,YearRepository>();
 builder.Services.AddScoped<ISectionRepository,SectionRepository>();
 builder.Services.AddScoped<IGroupRepository,GroupRepository>();
+builder.Services.AddScoped<IUserRegistrationService,UserRegistrationService>();
 
 var app = builder.Build();
 

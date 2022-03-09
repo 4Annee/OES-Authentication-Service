@@ -6,5 +6,7 @@ namespace AuthenticationService.DTOs.Section
     {
         [Required]
         public string StudySection { get; set; }
+        [Required]
+        public Guid YearId { get; set; }
     }
 }

@@ -4,9 +4,15 @@ namespace AuthenticationService.Models
 {
     public class UserModel : IdentityUser
     {
+
+        public string FullName { get; set; }
+        public DateTime Birthday { get; set; }
+        public string? StudentID { get; set; }
+        public string CIDNumber { get; set; }
+
         // Many To One Relationship
-        public Group Group { get; set; }
-        public Guid GroupId { get; set; }
+        public Group? Group { get; set; }
+        public Guid? GroupId { get; set; }
 
     }
 }

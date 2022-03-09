@@ -28,7 +28,7 @@ namespace AuthenticationService.Repositories
             yearmodel.Id = Guid.NewGuid();
             context.Add(yearmodel);
             context.SaveChanges();
-            return mapper.Map<YearDto>(year);
+            return mapper.Map<YearDto>(yearmodel);
         }
 
         public List<YearDto> GetAllYears()

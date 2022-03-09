@@ -6,5 +6,7 @@ namespace AuthenticationService.DTOs.Group
     {
         [Required]
         public string StudyGroup { get; set; }
+        [Required]
+        public Guid SectionId { get; set; }
     }
 }

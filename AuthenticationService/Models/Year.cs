@@ -6,6 +6,7 @@
         public string StudyYear { get; set; } = "1st Year";
 
         // One To Many Relationship
-        public List<Section>? YearSections { get; set; }
+        public List<Section> YearSections { get; set; }
+        public List<Group> YearGroups { get; set; }
     }
 }
