@@ -66,7 +66,7 @@ static async void CreateDatabaseEntities(WebApplicationBuilder builder)
 {
     using (var context = builder.Services.BuildServiceProvider().GetRequiredService<UserServiceContext>())
     {
-        context.Database.EnsureDeleted();
+        //context.Database.EnsureDeleted();
         var usermg = builder.Services.BuildServiceProvider().GetRequiredService<IUserRegistrationService>();
         var rolemg = builder.Services.BuildServiceProvider().GetRequiredService<IRoleManagementService>();
         if (context.Database.EnsureCreated())
