@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationService.Controllers
@@ -7,10 +8,22 @@ namespace AuthenticationService.Controllers
     [ApiController]
     public class VerificationController : ControllerBase
     {
-        /**
-         Endpoints :
-            1 - Verify Token 
-            2 - Verify Role
-         */
+        [HttpGet("token")]
+        public IActionResult VerifyToken()
+        {
+            if(User.Identity != null)
+                if (User.Identity.IsAuthenticated)
+                    return Ok();
+            return Unauthorized();
+        }
+
+        [HttpGet("role/{role}")]
+        [Authorize]
+        public IActionResult VerifyRole(string role)
+        {
+            if (User.IsInRole(role))
+                return Ok();
+            return Unauthorized();
+        }
     }
 }

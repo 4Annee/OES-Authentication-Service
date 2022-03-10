@@ -10,6 +10,7 @@ using AuthenticationService.Data;
 using AuthenticationService.Models;
 using AuthenticationService.Repositories;
 using AuthenticationService.DTOs.Section;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthenticationService.Controllers
 {
@@ -39,13 +40,15 @@ namespace AuthenticationService.Controllers
         // POST: api/StudySections
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<Section> PostSection(SectionDtoForCreation section)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<Section>> PostSection(SectionDtoForCreation section)
         {
-            return Ok(repo.AddSection(section));
+            return Ok(await repo.AddSection(section));
         }
 
         // DELETE: api/StudySections/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteSection(Guid id)
         {
             repo.RemoveSection(id);

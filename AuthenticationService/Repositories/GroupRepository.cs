@@ -9,7 +9,7 @@ namespace AuthenticationService.Repositories
     {
         List<GroupDto> GetYearGroups(Guid YearId);
         List<GroupDto> GetSectionGroups(Guid SectionId);
-        GroupDto AddGroup(GroupDtoForCreation group);
+        Task<GroupDto> AddGroup(GroupDtoForCreation group);
         void RemoveGroup(Guid id);
     }
     public class GroupRepository : IGroupRepository
@@ -22,14 +22,14 @@ namespace AuthenticationService.Repositories
             this.context = context;
             this.mapper = mapper;
         }
-        public GroupDto AddGroup(GroupDtoForCreation group)
+        public async Task<GroupDto> AddGroup(GroupDtoForCreation group)
         {
             var groupmodel = mapper.Map<Group>(group);
             groupmodel.Id = Guid.NewGuid();
             try
             {groupmodel.YearId = context.Sections.Find(group.SectionId).YearId;}
             catch{}
-            context.Add(groupmodel);
+            await context.AddAsync(groupmodel);
             context.SaveChanges();
             return mapper.Map<GroupDto>(groupmodel);
         }

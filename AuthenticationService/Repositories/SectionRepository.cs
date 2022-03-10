@@ -8,7 +8,7 @@ namespace AuthenticationService.Repositories
     public interface ISectionRepository
     {
         List<SectionDto> GetYearSections(Guid YearId);
-        SectionDto AddSection(SectionDtoForCreation section);
+        Task<SectionDto> AddSection(SectionDtoForCreation section);
         void RemoveSection(Guid id);
     }
 
@@ -22,11 +22,11 @@ namespace AuthenticationService.Repositories
             this.context = context;
             this.mapper = mapper;
         }
-        public SectionDto AddSection(SectionDtoForCreation section)
+        public async Task<SectionDto> AddSection(SectionDtoForCreation section)
         {
             var sectionmodel = mapper.Map<Section>(section);
             sectionmodel.Id = Guid.NewGuid();
-            context.Add(sectionmodel);
+            await context.AddAsync(sectionmodel);
             context.SaveChanges();
             return mapper.Map<SectionDto>(sectionmodel);
         }

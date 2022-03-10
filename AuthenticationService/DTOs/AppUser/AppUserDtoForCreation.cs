@@ -13,10 +13,9 @@ namespace AuthenticationService.DTOs.AppUser
         [Required]
         public DateTime Birthday { get; set; }
         [Required]
-        public string? StudentCardId { get; set; }
+        public string StudentCardId { get; set; }
         [Required]
         public string CIDNumber { get; set; }
-        [Required]
         public Guid? GroupID { get; set; }
     }
 }

@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/AuthenticationService/userservice.db-wal
+/AuthenticationService/userservice.db-shm
+/AuthenticationService/userservice.db
+/AuthenticationService/userservice.db
+/AuthenticationService/userservice.db

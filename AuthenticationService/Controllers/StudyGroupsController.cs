@@ -10,6 +10,7 @@ using AuthenticationService.Data;
 using AuthenticationService.Models;
 using AuthenticationService.Repositories;
 using AuthenticationService.DTOs.Group;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthenticationService.Controllers
 {
@@ -49,13 +50,15 @@ namespace AuthenticationService.Controllers
 
 
         [HttpPost]
-        public ActionResult<Group> CreateGroup(GroupDtoForCreation group)
+        [Authorize(Roles="Admin")]
+        public async Task<ActionResult<Group>> CreateGroup(GroupDtoForCreation group)
         {
-            return Ok(repo.AddGroup(group));
+            return Ok(await repo.AddGroup(group));
         }
 
         // DELETE: api/StudyGroups/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteGroup(Guid id)
         {
             repo.RemoveGroup(id);

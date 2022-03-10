@@ -8,8 +8,8 @@ namespace AuthenticationService.Repositories
     public interface IYearRepository
     {
         List<YearDto> GetAllYears();
-        YearDto AddYear(YearDtoForCreation year);
-        void RemoveYear(Guid id);
+        Task<YearDto> AddYear(YearDtoForCreation year);
+        Task RemoveYear(Guid id);
     }
 
     public class YearRepository : IYearRepository
@@ -22,11 +22,11 @@ namespace AuthenticationService.Repositories
             this.context = context;
             this.mapper = mapper;
         }
-        public YearDto AddYear(YearDtoForCreation year)
+        public async Task<YearDto> AddYear(YearDtoForCreation year)
         {
             var yearmodel = mapper.Map<Year>(year);
             yearmodel.Id = Guid.NewGuid();
-            context.Add(yearmodel);
+            await context.AddAsync(yearmodel);
             context.SaveChanges();
             return mapper.Map<YearDto>(yearmodel);
         }
@@ -36,13 +36,15 @@ namespace AuthenticationService.Repositories
             return mapper.Map<List<YearDto>>(context.Years.ToList());
         }
 
-        public void RemoveYear(Guid id)
+        public Task RemoveYear(Guid id)
         {
             if(context.Years.Any(e => e.Id == id))
             {
                 context.Years.Remove(context.Years.Find(id));
                 context.SaveChanges();
+                return Task.CompletedTask;
             }
+            return Task.FromResult(false);
         }
     }
 }

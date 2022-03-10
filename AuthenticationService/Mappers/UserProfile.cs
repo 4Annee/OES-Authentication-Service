@@ -11,6 +11,8 @@ namespace AuthenticationService.Mappers
             CreateMap<AppUserDtoForCreation, UserModel>()
                 .ForMember(e=>e.UserName,opt=>opt.MapFrom(s=>s.Email)).ReverseMap();
             CreateMap<AppUserDtoForLogin, UserModel>().ReverseMap();
+            CreateMap<UserModel, AppUserDto>().ReverseMap();
+            CreateMap<AppUserDtoForChangingPassword, UserModel>().ReverseMap();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace AuthenticationService.Services
 
     public interface IUserRegistrationService
     {
-        Task<bool> RegisterAppUser(AppUserDtoForCreation user);
+        Task<string> RegisterAppUser(AppUserDtoForCreation user);
         Task<bool> ChangeAppUserPassword(ClaimsPrincipal User,AppUserDtoForChangingPassword model);
     }
     public class UserRegistrationService : IUserRegistrationService
@@ -51,17 +51,17 @@ namespace AuthenticationService.Services
             return false;
         }
 
-        public async Task<bool> RegisterAppUser(AppUserDtoForCreation user)
+        public async Task<string> RegisterAppUser(AppUserDtoForCreation user)
         {
             try
             {
                 var appUser = mapper.Map<UserModel>(user);
                 await userManager.CreateAsync(appUser, user.Password);
-                return true;
+                return "true";
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
     }

@@ -10,6 +10,7 @@ using AuthenticationService.Data;
 using AuthenticationService.Models;
 using AuthenticationService.Repositories;
 using AuthenticationService.DTOs.Year;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthenticationService.Controllers
 {
@@ -39,16 +40,18 @@ namespace AuthenticationService.Controllers
 
         // POST: api/StudyYear
         [HttpPost]
-        public ActionResult PostYear(YearDtoForCreation year)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> PostYear(YearDtoForCreation year)
         {
-            return Ok(yearRepo.AddYear(year));
+            return Ok(await yearRepo.AddYear(year));
         }
 
         // DELETE: api/StudyYear/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteYear(Guid id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteYear(Guid id)
         {
-            yearRepo.RemoveYear(id);
+            await yearRepo.RemoveYear(id);
             return NoContent();
         }
     }

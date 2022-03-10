@@ -19,9 +19,10 @@ namespace AuthenticationService.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> PostAppUser(AppUserDtoForCreation user)
         {
-            if (await service.RegisterAppUser(user))
+            var res = await service.RegisterAppUser(user);
+            if (res == "true")
                 return Ok();
-            return BadRequest();
+            return BadRequest(res);
         }
 
 
