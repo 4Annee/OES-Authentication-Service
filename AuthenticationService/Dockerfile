@@ -19,4 +19,4 @@ RUN dotnet publish "AuthenticationService.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AuthenticationService.dll"]
+ENTRYPOINT ["dotnet", "AuthenticationService.dll", "--server.urls", "http://+:80;https://+:443"]
