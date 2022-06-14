@@ -16,6 +16,7 @@ namespace AuthenticationService.Controllers
 {
     [Route("api/study/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudyGroupsController : ControllerBase
     {
         private readonly IGroupRepository repo;
@@ -25,7 +26,7 @@ namespace AuthenticationService.Controllers
             this.repo = repo;
         }
 
-        [HttpGet("/year/{id}")]
+        [HttpGet("year/{id}")]
         public ActionResult<Group> GetYearGroups(Guid id)
         {
             var sections = repo.GetYearGroups(id);
@@ -36,7 +37,7 @@ namespace AuthenticationService.Controllers
             return Ok(sections);
         }
 
-        [HttpGet("/section/{id}")]
+        [HttpGet("section/{id}")]
         public ActionResult<Group> GetSectionGroups(Guid id)
         {
             var sections = repo.GetSectionGroups(id);
@@ -50,7 +51,7 @@ namespace AuthenticationService.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles="Admin")]
+        //[Authorize(Roles="Admin")]
         public async Task<ActionResult<Group>> CreateGroup(GroupDtoForCreation group)
         {
             return Ok(await repo.AddGroup(group));
@@ -58,7 +59,7 @@ namespace AuthenticationService.Controllers
 
         // DELETE: api/StudyGroups/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult DeleteGroup(Guid id)
         {
             repo.RemoveGroup(id);

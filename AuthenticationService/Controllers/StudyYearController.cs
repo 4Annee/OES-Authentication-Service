@@ -16,6 +16,7 @@ namespace AuthenticationService.Controllers
 {
     [Route("api/study/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudyYearController : ControllerBase
     {
         private readonly IYearRepository yearRepo;
@@ -40,7 +41,7 @@ namespace AuthenticationService.Controllers
 
         // POST: api/StudyYear
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> PostYear(YearDtoForCreation year)
         {
             return Ok(await yearRepo.AddYear(year));
@@ -48,7 +49,7 @@ namespace AuthenticationService.Controllers
 
         // DELETE: api/StudyYear/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteYear(Guid id)
         {
             await yearRepo.RemoveYear(id);

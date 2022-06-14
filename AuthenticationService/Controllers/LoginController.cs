@@ -34,7 +34,9 @@ namespace AuthenticationService.Controllers
                 var TokenDescriptor = new SecurityTokenDescriptor()
                 {
                     Subject = new ClaimsIdentity(new Claim[] {
-                        new Claim("UserID", user.Id.ToString())
+                        new Claim("UserID", user.Id.ToString()),
+                        new Claim(ClaimTypes.Role, User.IsInRole("Admin")?"Admin":User.IsInRole("Examiner")?"Examiner":"User")
+
                     }),
                     Expires = DateTime.UtcNow.AddDays(3),
                     SigningCredentials = new SigningCredentials(

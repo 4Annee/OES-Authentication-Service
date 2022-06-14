@@ -16,6 +16,7 @@ namespace AuthenticationService.Controllers
 {
     [Route("api/study/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudySectionsController : ControllerBase
     {
         private readonly ISectionRepository repo;
@@ -40,7 +41,7 @@ namespace AuthenticationService.Controllers
         // POST: api/StudySections
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<Section>> PostSection(SectionDtoForCreation section)
         {
             return Ok(await repo.AddSection(section));
@@ -48,7 +49,7 @@ namespace AuthenticationService.Controllers
 
         // DELETE: api/StudySections/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult DeleteSection(Guid id)
         {
             repo.RemoveSection(id);

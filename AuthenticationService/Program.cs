@@ -5,6 +5,10 @@ using AuthenticationService.Repositories;
 using Microsoft.AspNetCore.Identity;
 using AuthenticationService.Models;
 using AuthenticationService.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,14 +16,26 @@ builder.Services.AddDbContext<UserServiceContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("UserServiceDb")));
 
 
-builder.Services.AddDefaultIdentity<UserModel>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = true;
-        
-    })
+builder.Services.AddDefaultIdentity<UserModel>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<UserServiceContext>();
 
+
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("AppSettings:JWTSecrets"))),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ClockSkew = TimeSpan.FromDays(3),
+    };
+});
 
 // Add services to the container
 builder.Services.AddAutoMapper(typeof(Program));
