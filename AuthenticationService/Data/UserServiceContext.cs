@@ -32,5 +32,6 @@ namespace AuthenticationService.Data
         public DbSet<Year> Years { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<StudyModule> Modules { get; set; }
     }
 }

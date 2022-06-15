@@ -13,6 +13,6 @@ namespace AuthenticationService.Models
         // Many To One Relationship
         public Group? Group { get; set; }
         public Guid? GroupId { get; set; }
-
+        public ICollection<StudyModule>? Teaching { get; set; }
     }
 }

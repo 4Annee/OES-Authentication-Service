@@ -11,6 +11,6 @@
 
         // One To Many
         public List<Group> Groups { get; set; }
-
+        public ICollection<StudyModule> StudyModules { get; set; }
     }
 }

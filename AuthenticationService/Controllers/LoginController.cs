@@ -23,12 +23,15 @@ namespace AuthenticationService.Controllers
             this.configuration = configuration;
         }
 
-        // TODO : If More Methods Are Needed Clean The Code Using Services
 
+        /// <summary>
+        /// Logs User In , User Sends In Login Data, Gets Back token, userid and role
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> LoginUser(AppUserDtoForLogin model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
+            var role = (await userManager.GetRolesAsync(user)).FirstOrDefault();
             if (user is not null && await userManager.CheckPasswordAsync(user, model.Password))
             {
                 var TokenDescriptor = new SecurityTokenDescriptor()
@@ -47,7 +50,7 @@ namespace AuthenticationService.Controllers
                 var TokenHandler = new JwtSecurityTokenHandler();
                 var securitytoken = TokenHandler.CreateToken(TokenDescriptor);
                 var token = TokenHandler.WriteToken(securitytoken);
-                return Ok(new { token, user.Id });
+                return Ok(new { token, user.Id, role});;
             }
             else
                 return BadRequest(new { message = "UserName Or Password is Incorrect" });
