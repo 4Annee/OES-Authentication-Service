@@ -18,6 +18,10 @@ namespace AuthenticationService.Controllers
             this.roleMng = service;
         }
 
+
+        /// <summary>
+        /// Get List Of Roles
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
@@ -27,6 +31,11 @@ namespace AuthenticationService.Controllers
             return Ok(res);
         }
 
+
+
+        /// <summary>
+        /// Add A User To A Role
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> AddUserToRole([FromBody]UserRoleDto userRole)
         {
@@ -35,7 +44,10 @@ namespace AuthenticationService.Controllers
             return BadRequest();
         }        
         
-        
+
+        /// <summary>
+        /// Remove User From Role
+        /// </summary>
         [HttpDelete]
         public async Task<IActionResult> RemoveUserFromRole([FromBody]UserRoleDto userRole)
         {
@@ -43,13 +55,5 @@ namespace AuthenticationService.Controllers
                 return NoContent();
             return BadRequest();
         }
-
-
-
-        /**
-        Endpoints : Can Be Added if Necessary As They Exist In The Service Injected
-            - Add Role 
-            3 - Remove User From Role
-         */
     }
 }

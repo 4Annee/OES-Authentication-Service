@@ -38,7 +38,7 @@ namespace AuthenticationService.Controllers
                 {
                     Subject = new ClaimsIdentity(new Claim[] {
                         new Claim("UserID", user.Id.ToString()),
-                        new Claim(ClaimTypes.Role, User.IsInRole("Admin")?"Admin":User.IsInRole("Examiner")?"Examiner":"User")
+                        new Claim("role", role ?? "User")
 
                     }),
                     Expires = DateTime.UtcNow.AddDays(3),

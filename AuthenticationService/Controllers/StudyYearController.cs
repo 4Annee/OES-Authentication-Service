@@ -26,7 +26,10 @@ namespace AuthenticationService.Controllers
             this.yearRepo = yearRepo;
         }
 
-        // GET: api/StudyYear
+
+        /// <summary>
+        /// Get Years List
+        /// </summary>
         [HttpGet]
         public ActionResult<IEnumerable<YearDto>> GetYears()
         {
@@ -39,7 +42,10 @@ namespace AuthenticationService.Controllers
         }
 
 
-        // POST: api/StudyYear
+
+        /// <summary>
+        /// Add New Year
+        /// </summary>
         [HttpPost]
         //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> PostYear(YearDtoForCreation year)
@@ -47,7 +53,10 @@ namespace AuthenticationService.Controllers
             return Ok(await yearRepo.AddYear(year));
         }
 
-        // DELETE: api/StudyYear/5
+
+        /// <summary>
+        /// Delete A Year
+        /// </summary>
         [HttpDelete("{id}")]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteYear(Guid id)

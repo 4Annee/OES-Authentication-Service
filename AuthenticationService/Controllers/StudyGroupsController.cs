@@ -26,6 +26,9 @@ namespace AuthenticationService.Controllers
             this.repo = repo;
         }
 
+        /// <summary>
+        /// Get Groups In Year Using year Id
+        /// </summary>
         [HttpGet("year/{id}")]
         public ActionResult<Group> GetYearGroups(Guid id)
         {
@@ -37,6 +40,10 @@ namespace AuthenticationService.Controllers
             return Ok(sections);
         }
 
+
+        /// <summary>
+        /// Get Groups In Section Using ID
+        /// </summary>
         [HttpGet("section/{id}")]
         public ActionResult<Group> GetSectionGroups(Guid id)
         {
@@ -50,6 +57,9 @@ namespace AuthenticationService.Controllers
 
 
 
+        /// <summary>
+        /// Create Group
+        /// </summary>
         [HttpPost]
         //[Authorize(Roles="Admin")]
         public async Task<ActionResult<Group>> CreateGroup(GroupDtoForCreation group)
@@ -57,6 +67,9 @@ namespace AuthenticationService.Controllers
             return Ok(await repo.AddGroup(group));
         }
 
+        /// <summary>
+        /// Delete A Group
+        /// </summary>
         // DELETE: api/StudyGroups/5
         [HttpDelete("{id}")]
         //[Authorize(Roles = "Admin")]

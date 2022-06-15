@@ -25,7 +25,12 @@ namespace AuthenticationService.Controllers
         {
             this.repo = repo;
         }
-        // GET: api/StudySections/5
+
+
+
+        /// <summary>
+        /// Get All Sections In A Year
+        /// </summary>
         [HttpGet("{id}")]
         public ActionResult<Section> GetSections(Guid id)
         {
@@ -38,7 +43,10 @@ namespace AuthenticationService.Controllers
         }
 
 
-        // POST: api/StudySections
+
+        /// <summary>
+        /// Create A New Section
+        /// </summary>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         //[Authorize(Roles = "Admin")]
@@ -47,7 +55,10 @@ namespace AuthenticationService.Controllers
             return Ok(await repo.AddSection(section));
         }
 
-        // DELETE: api/StudySections/5
+
+        /// <summary>
+        /// Delete A Section
+        /// </summary>
         [HttpDelete("{id}")]
         //[Authorize(Roles = "Admin")]
         public IActionResult DeleteSection(Guid id)
