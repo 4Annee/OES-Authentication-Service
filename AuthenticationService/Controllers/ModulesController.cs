@@ -1,4 +1,5 @@
 ﻿using AuthenticationService.Data;
+using AuthenticationService.DTOs.AppUser;
 using AuthenticationService.DTOs.Module;
 using AuthenticationService.Models;
 using AutoMapper;
@@ -21,6 +22,25 @@ namespace AuthenticationService.Controllers
         {
             this.context = context;
             this.mapper = mapper;
+        }
+
+
+        /// <summary>
+        /// Get User Modules For Both Teacher And Student
+        /// </summary>
+        [HttpGet("/Students/{id}")]
+        public async Task<IActionResult> GetModuleStudents(string id) {
+            var module = context.Modules.Include(m => m.CourseStudents).FirstOrDefault(m=>m.Id == id);
+            if (module == null)
+                return NotFound();
+
+            List<AppUserDto> students = new List<AppUserDto>();
+            foreach (var item in module.CourseStudents)
+            {
+                var groups = await context.Groups.Include(g => g.Students).Where(g => g.SectionId == item.Id).ToListAsync();
+                groups.ForEach(g => { students.AddRange(mapper.Map<List<AppUserDto>>(g.Students)); });
+            }
+            return Ok(students);
         }
 
 
