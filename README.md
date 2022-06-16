@@ -56,6 +56,13 @@ localhost:8080/
 
 3 - Choose The Docker Run Option (Drop down right to run)
 
+or 
+
+`````
+cd AuthenticationService // make sure you are in the same folder as program.cs
+dotnet watch run
+`````
+
 ## Test These :
 
 `````
