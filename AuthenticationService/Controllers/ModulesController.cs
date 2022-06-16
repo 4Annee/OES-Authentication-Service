@@ -79,7 +79,7 @@ namespace AuthenticationService.Controllers
         /// <summary>
         /// Assign Module To Teacher
         /// </summary>
-        [HttpPost]
+        [HttpPost("/AssignToTeacher")]
         public async Task<IActionResult> AssignModuleToTeacher([FromBody]ModuleDTOAssignTeacher dto)
         {
             var module = await context.Modules.Include(m=>m.CourseTeachers).FirstOrDefaultAsync(u=>u.Id == dto.ModuleId);
@@ -99,7 +99,7 @@ namespace AuthenticationService.Controllers
         /// <summary>
         /// Assign Module To Section
         /// </summary>
-        [HttpPost]
+        [HttpPost("/AssignToSection")]
         public async Task<IActionResult> AssignModuleToSection([FromBody]ModuleDTOAssignSection dto)
         {
             var module = await context.Modules.Include(m => m.CourseTeachers).FirstOrDefaultAsync(u => u.Id == dto.ModuleId);

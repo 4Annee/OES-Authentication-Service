@@ -16,7 +16,7 @@ namespace AuthenticationService.Controllers
 {
     [Route("api/study/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class StudyYearController : ControllerBase
     {
         private readonly IYearRepository yearRepo;

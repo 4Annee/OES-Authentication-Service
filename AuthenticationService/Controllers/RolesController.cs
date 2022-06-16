@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthenticationService.Controllers
 {
     [Route("api/auth/[controller]")]
-    [Authorize(Roles ="Admin")]
+    //[Authorize(Roles ="Admin")]
     [ApiController]
     public class RolesController : ControllerBase
     {

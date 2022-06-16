@@ -38,14 +38,16 @@ namespace AuthenticationService.Controllers
                 {
                     Subject = new ClaimsIdentity(new Claim[] {
                         new Claim("UserID", user.Id.ToString()),
-                        new Claim("role", role ?? "User")
+                        new Claim(ClaimTypes.Role, role ?? "User")
 
                     }),
                     Expires = DateTime.UtcNow.AddDays(3),
                     SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:JWTSecrets")))
-                        , SecurityAlgorithms.HmacSha256Signature
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                        , SecurityAlgorithms.HmacSha256
                     ),
+                    Issuer = configuration["Jwt:Issuer"],
+                    Audience = configuration["Jwt:Audience"]                    
                 };
                 var TokenHandler = new JwtSecurityTokenHandler();
                 var securitytoken = TokenHandler.CreateToken(TokenDescriptor);

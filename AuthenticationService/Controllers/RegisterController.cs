@@ -20,7 +20,7 @@ namespace AuthenticationService.Controllers
         /// Create New User
         /// </summary>
         [HttpPost]
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> PostAppUser(AppUserDtoForCreation user)
         {
             var res = await service.RegisterAppUser(user);
@@ -34,7 +34,7 @@ namespace AuthenticationService.Controllers
         /// Change User Password
         /// </summary>
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [Route("ChangePassword")]
         public async Task<IActionResult> ChangePassword(AppUserDtoForChangingPassword model)
         {

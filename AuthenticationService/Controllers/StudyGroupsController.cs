@@ -16,7 +16,7 @@ namespace AuthenticationService.Controllers
 {
     [Route("api/study/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class StudyGroupsController : ControllerBase
     {
         private readonly IGroupRepository repo;
