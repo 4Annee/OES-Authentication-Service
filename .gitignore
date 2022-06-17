@@ -367,3 +367,5 @@ FodyWeavers.xsd
 /AuthenticationService/userservice.db
 /AuthenticationService/userservice.db
 /AuthenticationService/userservice.tar
+/AuthenticationService/Migrations
+/AuthenticationService/.config

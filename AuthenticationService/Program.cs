@@ -16,7 +16,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UserServiceContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("UserServiceDb")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserServiceContext")));
 
 
 builder.Services.AddDefaultIdentity<UserModel>()
