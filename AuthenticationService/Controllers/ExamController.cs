@@ -9,6 +9,7 @@ using AuthenticationService.Data;
 using AuthenticationService.Models;
 using AuthenticationService.DTOs.Exam;
 using AutoMapper;
+using AuthenticationService.DTOs.Question;
 
 namespace AuthenticationService.Controllers
 {
@@ -92,21 +93,65 @@ namespace AuthenticationService.Controllers
         /// <summary>
         /// Get Exam And Its Questions /Details/{idExam}
         /// </summary>
-
+        [HttpGet("/Details/{idExam}")]
+        public async Task<ActionResult<ExamDto>> getExamWithQuestions(Guid idExam)
+        {
+            var exam = await _context.Exams.Include(e => e.Questions).Include(e=>e.AssignedGroups).FirstOrDefaultAsync(e => e.Id == idExam);
+            if (exam == null)
+                return NotFound();
+            var examres = mapper.Map<ExamDto>(exam);
+            examres.AssignedGroups = exam.AssignedGroups.Select(s => s.GroupId).ToArray();
+            if(exam.Published)
+                examres.Questions = mapper.Map<List<QuestionDto>>(exam.Questions);
+            return Ok(examres);
+        }
 
         /// <summary>
         /// Create New Exam /
         /// </summary>
-
+        [HttpPost]
+        public async Task<IActionResult> createExam(ExamCreationDto dto)
+        {
+            var exam = mapper.Map<Exam>(dto);
+            if (exam == null)
+                return BadRequest();
+            exam = (await _context.AddAsync(exam)).Entity;
+            exam.AssignedGroups = new List<ExamGroup>();
+            foreach (var item in dto.AssignedGroups)
+            {
+                exam.AssignedGroups.Add(new ExamGroup() {GroupId = item,ExamId = exam.Id });
+            };
+            return Ok(await _context.SaveChangesAsync());
+        }
 
         /// <summary>
         /// Publish The Exam /Publish/{id}
         /// </summary>
-
+        [HttpPost("/Publish/{idExam}")]
+        public async Task<IActionResult> publishExam(Guid idExam)
+        {
+            var exam = await _context.Exams.FindAsync(idExam);
+            if (exam == null)
+                return NotFound();
+            exam.Published = true;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
         /// <summary>
         /// Update Exam  PUT /Details/{idExam}
         /// </summary>
+        [HttpPut("/Details/{idExam}")]
+        public async Task<IActionResult> updateExam(Guid idExam,ExamUpdateDto dto)
+        {
+            var exam = await _context.Exams.FindAsync(idExam);
+            if (exam == null)
+                return NotFound();
+            var exmup = mapper.Map<Exam>(dto);
+            mapper.Map(exmup, exam);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
 
         /// <summary>
@@ -114,16 +159,42 @@ namespace AuthenticationService.Controllers
         /// </summary>
 
 
+
         /// <summary>
         /// Add Question To An Exam POST /Question
         /// </summary>
+        [HttpPost("/Question")]
+        public async Task<IActionResult> addQuestionToExam(QuestionCreationDto dto)
+        {
+            var qt = mapper.Map<Question>(dto);
+            if (qt == null)
+                return BadRequest();
+            qt.Choices = new();
+            if(dto.Choices != null)
+                foreach (var item in dto.Choices)
+                {
+                    qt.Choices.Add(new Choice() {choice=item});
+                }
+            var res = await _context.Question.AddAsync(qt);
+            await _context.SaveChangesAsync();
+            return Ok(res.Entity);
+        }
 
 
         /// <summary>
         /// Update Question Details PUT /Question/{id}
         /// </summary>
-
-
+        [HttpPut("/Question/{idQt}")]
+        public async Task<IActionResult> updateQuestion(Guid idQt, QuestionUpdateDto dto)
+        {
+            var question = await _context.Question.FindAsync(idQt);
+            if (question == null)
+                return NotFound();
+            var qtup = mapper.Map<Exam>(dto);
+            mapper.Map(qtup, question);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
         /// <summary>
         /// Delete Question /Question/{id}
         /// </summary>
