@@ -135,8 +135,7 @@ static async void CreateDatabaseEntities(WebApplicationBuilder builder)
                     CIDNumber = "None",
                     Email = "admin@esi-sba.dz",
                     FullName = "Admin",
-                    Password = "@Admin123",
-                    StudentCardId = "None"
+                    Password = "@Admin123"
                 }) ;
                 await usermg.RegisterAppUser(new()
                 {
@@ -144,8 +143,15 @@ static async void CreateDatabaseEntities(WebApplicationBuilder builder)
                     CIDNumber = "None",
                     Email = "examiner@esi-sba.dz",
                     FullName = "Examiner",
-                    Password = "@Exam123",
-                    StudentCardId = "None"
+                    Password = "@Exam123"
+                }) ;
+                await usermg.RegisterAppUser(new()
+                {
+                    Birthday = DateTime.Parse("2000-01-01"),
+                    Email = "student@esi-sba.dz",
+                    FullName = "Student @Esi",
+                    Password = "@Stud123",
+                    CIDNumber = "181837046350"
                 }) ;
                 var useridadmin = context.Users.Where(u => u.UserName == "admin@esi-sba.dz").FirstOrDefault().Id;
                 var useridexaminer = context.Users.Where(u => u.UserName == "examiner@esi-sba.dz").FirstOrDefault().Id;

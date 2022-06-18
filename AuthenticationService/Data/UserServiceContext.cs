@@ -21,7 +21,9 @@ namespace AuthenticationService.Data
                 .HasOne(c => c.Year)
                 .WithMany(e=>e.YearGroups)
                 .OnDelete(DeleteBehavior.NoAction);
-
+            
+            builder.Entity<StudentPassedExam>().HasKey(c => new { c.StudentId, c.ExamId });
+            builder.Entity<ExamGroup>().HasKey(c => new { c.GroupId, c.ExamId });
 
             builder.Entity<Group>()
                 .HasOne(c => c.Section)
@@ -33,5 +35,11 @@ namespace AuthenticationService.Data
         public DbSet<Section> Sections { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<StudyModule> Modules { get; set; }
+        public DbSet<Exam> Exams { get; set; }
+        public DbSet<Question> Question { get; set; }
+        public DbSet<QuestionSolution> QuestionSolutions { get; set; }
+        public DbSet<StudentPassedExam> StudentPassedExams { get; set; }
+        public DbSet<StudentAnswer> StudentAnswers { get; set; }
+        
     }
 }
