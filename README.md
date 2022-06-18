@@ -58,6 +58,8 @@ localhost:8080/
 
 or 
 
+Make Sure You Have .net 6 SDK Installed Then Use The Commands :
+
 `````
 cd AuthenticationService // make sure you are in the same folder as program.cs
 dotnet watch run
